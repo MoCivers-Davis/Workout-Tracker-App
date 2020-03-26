@@ -2,12 +2,10 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const path = require("path");
+
+const PORT = process.env.PORT || 3000; //Setting the PORT
 
 
-const PORT = process.env.PORT || 3000;
-
-const db = require("./models");
 
 
 const app = express();
@@ -24,15 +22,9 @@ app.use(express.static("public"));
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 //workout is the name of the database
+//When we deploy homework to Heroku we want be able to use localhost.  So we have to use "mongoose.connect(process.env.MONGODB_URI" as illustrated above 
 
-//////////Routes for express can go here
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname,"index.html"));
-});
-
-app.get("/exercise", (req, res) => {
-    res.sendFile(path.join(__dirname, "exercise.html"));
-});
+app.use(require("./routes/view.js"));///requiring the view.js in the routes folder as this is where my routes are located
 
 // Listen on port 3000
 app.listen(3000, () => {
