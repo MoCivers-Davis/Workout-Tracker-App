@@ -1,12 +1,12 @@
 //This Routes file is for all of the API Routes.  I will need to create another js file for my HTTP routes, i.e, Post, Put
 //Store ROUTES// Route get route
 var api_express = require("express");
-var router = api_express.Router();
+var api_router = api_express.Router();
 
 const db = require("../models");
 
 //get route for single workout
-router.get("/api/workouts", (req, res) => {
+api_router.get("/api/workouts", (req, res) => {
     db.Workout.find({}, (err, data) => {
         if (err) {
             console.log(err);
@@ -17,25 +17,46 @@ router.get("/api/workouts", (req, res) => {
 })
 
 //get route for range
-router.get("/api/workouts/range", (req, res) => {
+api_router.get("/api/workouts/range", (req, res) => {
     db.Workout.find({})
-    .then(exercise => {
-        res.json(exercise);
-    })
-    .catch(err => {
-        res.json(err);
-    });
+        .then(exercise => {
+            res.json(exercise);
+        })
+        .catch(err => {
+            res.json(err);
+        });
 })
 
 //put route
-router.put("/api/workouts/:id", (req, res) => {
+api_router.put("/api/workouts/:id", (req, res) => {
     console.log(req.body)
-    //res.sendFile(path.join(__dirname, "public/exercise.html"));
+    db.Workout.findByIdAndUpdate(req.params.id,
+        {
+            $push: {
+                exercises: req.body,
+            }
+        }, (err, data) => {
+            if (err)
+                throw err;
+
+            res.json(data);
+        });
+
+    //get workout object from MongoDB 
+    //push new workout to the exercises array on the workout object
+    //update the workout with the new array that includes the new exercise
+
+    // db.Workout.create({}, function (err, data) {
+    //     if (err)
+    //         throw err;
+
+    //     res.send(data)
+    // })
 })
 //post route for posting workout
-router.post("/api/workouts", (req, res) => {
+api_router.post("/api/workouts", (req, res) => {
     console.log(req.body)
-    db.workout.create(req.body, function (err, data) {
+    db.Workout.create({}, function (err, data) {
         if (err)
             throw err;
 
