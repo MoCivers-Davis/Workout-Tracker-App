@@ -1,5 +1,4 @@
-//This Routes file is for all of the API Routes.  I will need to create another js file for my HTTP routes, i.e, Post, Put
-//Store ROUTES// Route get route
+
 var api_express = require("express");
 var api_router = api_express.Router();
 
@@ -41,17 +40,6 @@ api_router.put("/api/workouts/:id", (req, res) => {
 
             res.json(data);
         });
-
-    //get workout object from MongoDB 
-    //push new workout to the exercises array on the workout object
-    //update the workout with the new array that includes the new exercise
-
-    // db.Workout.create({}, function (err, data) {
-    //     if (err)
-    //         throw err;
-
-    //     res.send(data)
-    // })
 })
 //post route for posting workout
 api_router.post("/api/workouts", (req, res) => {
@@ -63,11 +51,6 @@ api_router.post("/api/workouts", (req, res) => {
         res.send(data)
     })
 })
-//get 
-//delete
-
-
-
 
 // Export routes for server.js to use.
 module.exports = api_router;
